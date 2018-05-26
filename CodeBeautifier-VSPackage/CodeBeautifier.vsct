@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--  This is the file that defines the actual layout and type of the commands.
+        It is divided in different sections (e.g. command definition, command
+        placement, ...), with each defining a specific set of properties.
+        See the comment before each section for more details about how to
+        use it. -->
+
+  <!--  The VSCT compiler (the tool that translates this file into the binary 
+        format that VisualStudio will consume) has the ability to run a preprocessor 
+        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so 
+        it is possible to define includes and macros with the same syntax used 
+        in C++ files. Using this ability of the compiler here, we include some files 
+        defining some of the constants that we will use inside the file. -->
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+  <!--The Commands section is where we the commands, menus and menu groups are defined.
+      This section uses a Guid to identify the package that provides the command defined inside it. -->
+  <Commands package="guidCodeBeautifierPkg">
+    <!-- Inside this section we have different sub-sections: one for the menus, another  
+    for the menu groups, one for the buttons (the actual commands), one for the combos 
+    and the last one for the bitmaps used. Each element is identified by a command id that  
+    is a unique pair of guid and numeric identifier; the guid part of the identifier is usually  
+    called "command set" and is used to group different command inside a logically related  
+    group; your package should define its own command set in order to avoid collisions  
+    with command ids defined by other packages. -->
+    <Menus>
+      <Menu guid="guidCodeBeautifierCmdSet" id="TopLevelMenu" priority="0x000" type="Menu">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS" />
+        <Strings>
+          <ButtonText>&amp;Manobit</ButtonText>
+        </Strings>
+      </Menu>
+
+      <Menu guid="guidCodeBeautifierCmdSet" id="CodeBeautifierMenu" priority="0x0100" type="Menu">
+        <Parent guid="guidCodeBeautifierCmdSet" id="CodeBeautifierGroup"/>
+        <Strings>
+          <ButtonText>&amp;CodeBeautifier</ButtonText>
+        </Strings>
+      </Menu>
+    </Menus>
+    <!-- In this section you can define new menu groups. A menu group is a container for 
+         other menus or buttons (commands); from a visual point of view you can see the 
+         group as the part of a menu contained between two lines. The parent of a group 
+         must be a menu. -->
+    <Groups>
+      <Group guid="guidCodeBeautifierCmdSet" id="CodeBeautifierGroup" priority="0x0600">
+        <Parent guid="guidCodeBeautifierCmdSet" id="TopLevelMenu"/>
+      </Group>
+      <Group guid="guidCodeBeautifierCmdSet" id="GroupCommands" priority="0x0000">
+        <Parent guid="guidCodeBeautifierCmdSet" id="CodeBeautifierMenu"/>
+      </Group>
+      <Group guid="guidCodeBeautifierCmdSet" id="GroupOther" priority="0x0000">
+        <Parent guid="guidCodeBeautifierCmdSet" id="CodeBeautifierMenu"/>
+      </Group>
+    </Groups>
+
+    <!--Buttons section. -->
+    <!--This section defines the elements the user can interact with, like a menu command or a button 
+        or combo box in a toolbar. -->
+    <Buttons>
+      <!--To define a menu group you have to specify its ID, the parent menu and its display priority. 
+          The command is visible and enabled by default. If you need to change the visibility, status, etc, you can use
+          the CommandFlag node.
+          You can add more than one CommandFlag node e.g.:
+              <CommandFlag>DefaultInvisible</CommandFlag>
+              <CommandFlag>DynamicVisibility</CommandFlag>
+          If you do not want an image next to your command, remove the Icon node /> -->
+
+      <Button guid="guidCodeBeautifierCmdSet" id="cmdCurrentDocument" priority="0x0100" type="Button">
+        <Parent guid="guidCodeBeautifierCmdSet" id="GroupCommands" />
+        <Icon guid="guidFile" id="icoFile" />
+        <Strings>
+          <!--Do czego to służy ?<CanonicalName>MyCommand</CanonicalName>-->
+          <LocCanonicalName>CodeBeautifier.CurrentDocument</LocCanonicalName>
+          <ButtonText>&amp;Current Document</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidCodeBeautifierCmdSet" id="cmdAllOpenDocuments" priority="0x0100" type="Button">
+        <Parent guid="guidCodeBeautifierCmdSet" id="GroupCommands" />
+        <Icon guid="guidFiles" id="icoFiles" />
+        <Strings>
+          <LocCanonicalName>CodeBeautifier.AllOpenDocuments</LocCanonicalName>
+          <ButtonText>&amp;All Open Documents</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidCodeBeautifierCmdSet" id="cmdSelectedProject" priority="0x0100" type="Button">
+        <Parent guid="guidCodeBeautifierCmdSet" id="GroupCommands" />
+        <Icon guid="guidSolution" id="icoSolution" />
+        <Strings>
+          <LocCanonicalName>CodeBeautifier.SelectedProject</LocCanonicalName>
+          <ButtonText>&amp;Selected Project</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidCodeBeautifierCmdSet" id="cmdSelectedSolution" priority="0x0100" type="Button">
+        <Parent guid="guidCodeBeautifierCmdSet" id="GroupCommands" />
+        <Icon guid="guidSolution" id="icoSolution" />
+        <Strings>
+          <LocCanonicalName>CodeBeautifier.Solution</LocCanonicalName>
+          <ButtonText>S&amp;olution</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidCodeBeautifierCmdSet" id="cmdOptions" priority="0x0100" type="Button">
+        <Parent guid="guidCodeBeautifierCmdSet" id="GroupOther" />
+        <Icon guid="guidSettings" id="icoSettings" />
+        <Strings>
+          <LocCanonicalName>CodeBeautifier.Options</LocCanonicalName>
+          <ButtonText>&amp;Options...</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidCodeBeautifierCmdSet" id="cmdAbout" priority="0x0100" type="Button">
+        <Parent guid="guidCodeBeautifierCmdSet" id="GroupOther" />
+        <Icon guid="guidAbout" id="icoAbout" />
+        <Strings>
+          <LocCanonicalName>CodeBeautifier.About</LocCanonicalName>
+          <ButtonText>&amp;About...</ButtonText>
+        </Strings>
+      </Button>
+
+    </Buttons>
+
+    <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
+    <Bitmaps>
+      <!--  The bitmap id is defined in a way that is a little bit different from the others: 
+            the declaration starts with a guid for the bitmap strip, then there is the resource id of the 
+            bitmap strip containing the bitmaps and then there are the numeric ids of the elements used 
+            inside a button definition. An important aspect of this declaration is that the element id 
+            must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
+      <!--<Bitmap guid="guidImages" href="Resources\Images.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows"/>-->
+      <Bitmap guid="guidSettings" href="Resources\Settings.ico" />
+      <Bitmap guid="guidAbout" href="Resources\UIAboutBox.ico" />
+      <Bitmap guid="guidFile" href="Resources\TextFile.ico" />
+      <Bitmap guid="guidFiles" href="Resources\ShowAllFiles_16x_32.bmp" />
+      <Bitmap guid="guidSolution" href="Resources\VisualStudioSolution.ico" />
+    </Bitmaps>
+  </Commands>
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="guidCodeBeautifierPkg" value="{c2024206-0b8d-4e03-9ad0-4cc3bfe60dea}" />
+
+    <!-- This is the guid used to group the menu commands together -->
+    <GuidSymbol name="guidCodeBeautifierCmdSet" value="{d8b8bfb5-df0b-41c9-9217-ce2a27e62c23}">
+      <IDSymbol name="cmdCurrentDocument" value="0x0100" />
+      <IDSymbol name="cmdAllOpenDocuments" value="0x0101" />
+      <IDSymbol name="cmdSelectedProject" value="0x0102" />
+      <IDSymbol name="cmdSelectedSolution" value="0x0103" />
+      <IDSymbol name="cmdOptions" value="0x0200" />
+      <IDSymbol name="cmdAbout" value="0x0201" />
+
+      <IDSymbol name="CodeBeautifierMenu" value="0x1040" />
+
+      <IDSymbol name="CodeBeautifierGroup" value="0x1020" />
+      <IDSymbol name="TopLevelMenu" value="0x1021" />
+
+      <IDSymbol name="GroupCommands" value="0x1030" />
+      <IDSymbol name="GroupOther" value="0x1031" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidSettings" value="{a4d53000-db2a-415f-a50a-24016d12137d}" >
+      <IDSymbol name="icoSettings" value="1" />
+    </GuidSymbol>
+    <GuidSymbol name="guidAbout" value="{217A9A44-9815-476B-AABF-A7203D82798E}" >
+      <IDSymbol name="icoAbout" value="1" />
+    </GuidSymbol>
+    <GuidSymbol name="guidFile" value="{57D04336-EE74-4967-B741-6128A756C637}" >
+      <IDSymbol name="icoFile" value="1" />
+    </GuidSymbol>
+    <GuidSymbol name="guidFiles" value="{AEA2DB66-DCE8-41DE-8435-93F4F8B393D2}" >
+      <IDSymbol name="icoFiles" value="1" />
+    </GuidSymbol>
+    <GuidSymbol name="guidSolution" value="{C78FC48C-9AEC-4E6C-9345-83EDF7FFEF02}" >
+      <IDSymbol name="icoSolution" value="1" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

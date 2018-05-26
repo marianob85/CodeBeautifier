@@ -1,0 +1,17 @@
+[HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\<version>\General] "EnableVSIPLogging"=dword:00000001
+
+Then using Ctrl-Shift, click on a menu item and you'll get a message like this:
+
+C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe
+/rootsuffix Exp
+
+C:\Program Files (x86)\Microsoft Visual Studio 8\Common7\IDE\devenv.exe
+ /rootSuffix Exp
+
+rem $(ProjectDir)7za a -y -tzip "%SOLUTION_DIR%\Installers\%SOLUTION_NAME%.zip" "CodeBeautifier\*.dll" "%PROJECT_DIR%\CodeBeautifier.AddIn"
+
+Arid made one little mistake with the path of the file. The correct path has
+"microsoft" before "Visual Studio", so it is
+%APPDATA%\Microsoft\VisualStudio\8.0\1033\CmdUI.prf
+perhaps you might find the file there too.
+

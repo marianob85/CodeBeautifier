@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BDC1C260-37B9-4895-8B7C-B4B70F02619E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Settings</RootNamespace>
+    <AssemblyName>Settings</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Cert.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Forms\General\Applications.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\Applications.Designer.cs">
+      <DependentUpon>Applications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\Base.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\Base.Designer.cs">
+      <DependentUpon>Base.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Application.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Application.Designer.cs">
+      <DependentUpon>Application.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Application\AppStdIput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Application\AppStdIput.Designer.cs">
+      <DependentUpon>AppStdIput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Configuration\Configuration.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Configuration\Configuration.Designer.cs">
+      <DependentUpon>Configuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\ExcludeFileInsertHelper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\ExcludeFileInsertHelper.Designer.cs">
+      <DependentUpon>ExcludeFileInsertHelper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Language.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Language.Designer.cs">
+      <DependentUpon>Language.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Application\AppFile.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Application\AppFile.Designer.cs">
+      <DependentUpon>AppFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Language\LanguageExt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Language\LanguageExt.Designer.cs">
+      <DependentUpon>LanguageExt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Language\LanguageVS.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Language\LanguageVS.Designer.cs">
+      <DependentUpon>LanguageVS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\ExcludeFiles.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\ExcludeFiles.Designer.cs">
+      <DependentUpon>ExcludeFiles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Main.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\CodeBeautifulParams\Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\General\General.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\General\General.Designer.cs">
+      <DependentUpon>General.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Icons.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Icons.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SourcesEx\RegistryMonitor.cs" />
+    <Compile Include="Sources\ControlValidator.cs" />
+    <Compile Include="Sources\Settings\Settings.cs" />
+    <Compile Include="Sources\Settings\SettingsApplicationModeFile.cs" />
+    <Compile Include="Sources\Settings\SettingsApplicationModeStdInput.cs" />
+    <Compile Include="Sources\Settings\SettingsAppOptions.cs" />
+    <Compile Include="Sources\Settings\SettingsOptions.cs" />
+    <Compile Include="Sources\Settings\SettingsOptionsConfigFile.cs" />
+    <Compile Include="Sources\Settings\SettingsOptionsGeneral.cs" />
+    <Compile Include="Sources\Settings\SettingsOptionsGeneralLanguageC.cs" />
+    <Compile Include="Sources\Settings\SettingsOptionsGeneralLanguageCSharp.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\General\Applications.resx">
+      <DependentUpon>Applications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\Base.resx">
+      <DependentUpon>Base.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\Application.resx">
+      <DependentUpon>Application.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\Application\AppStdIput.resx">
+      <DependentUpon>AppStdIput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\Configuration\Configuration.resx">
+      <DependentUpon>Configuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\ExcludeFileInsertHelper.resx">
+      <DependentUpon>ExcludeFileInsertHelper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\ExcludeFiles.resx">
+      <DependentUpon>ExcludeFiles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\Application\AppFile.resx">
+      <DependentUpon>AppFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\Language.resx">
+      <DependentUpon>Language.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\Language\LanguageExt.resx">
+      <DependentUpon>LanguageExt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\Language\LanguageVS.resx">
+      <DependentUpon>LanguageVS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\CodeBeautifulParams\Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\General\General.resx">
+      <DependentUpon>General.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Icons.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Icons.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Cert.snk" />
+    <None Include="Resources\ApplicationRoleError_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ApplicationRoleWarning_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ApplicationServiceOK_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Exclamation_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HelpApplication_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\StatusInformation_16x.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <!-- Import of the MSBuildCommunityTask targets -->
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+  <!-- to AssemblyInfo to include svn revision number -->
+  <Target Name="BeforeBuild" Condition="$(Configuration) == 'Release'">
+    <SvnVersion LocalPath="$(MSBuildProjectDirectory)" ToolPath="">
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </SvnVersion>
+    <FileUpdate Files="Properties\AssemblyInfo.cs" Regex="(\d+)\.(\d+)\.(\d+)\.(\d+)" ReplacementText="$1.$2.$3.$(Revision)" />
+  </Target>
+</Project>

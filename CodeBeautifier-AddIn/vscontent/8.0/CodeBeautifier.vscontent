@@ -1,0 +1,13 @@
+<VSContent xmlns="http://schemas.microsoft.com/developer/vscontent/2005"> 
+    <Content>
+        <FileName>CodeBeautifier.AddIn</FileName>
+        <FileName>CodeBeautifier\Settings.dll</FileName>
+		    <FileName>CodeBeautifier\CodeBeautifierBase.dll</FileName>
+		    <FileName>CodeBeautifier\CodeBeautifier.dll</FileName>
+        <FileName>CodeBeautifier\DiffPlex.dll</FileName>
+        <DisplayName>Code beautifier Add-in</DisplayName>
+        <Description>Code beautifier Add-in for Visual Studio evironment.</Description>
+        <FileContentType>AddIn</FileContentType>
+        <ContentVersion>1.0</ContentVersion>
+    </Content>
+</VSContent>
