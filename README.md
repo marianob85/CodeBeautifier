@@ -1,6 +1,6 @@
 # Code beautifier for Visual Studio
 
-Visual_Studio_2012_logo_and_wordmarkCode beautifier it’s a standalone Visual Studio plugin for various external code-format application.
+Code beautifier it's a standalone Visual Studio plugin for various external code-format application.
 
 At the moment the software provides these functionalities:
 - Support for external application using files as input,
