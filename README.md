@@ -17,7 +17,7 @@ At the moment the software provides these functionalities:
 - each application can be set for different file extension
 - application log ( can be found in Output window: Show output from )
 
-Wiki:[ issues.manobit.com/projects/code-beautifier/wiki/Wiki]( issues.manobit.com/projects/code-beautifier/wiki/Wiki " issues.manobit.com/projects/code-beautifier/wiki/Wiki")
+Wiki: [http://issues.manobit.com/projects/code-beautifier/wiki/Wiki](http://http://issues.manobit.com/projects/code-beautifier/wiki/Wiki "http://issues.manobit.com/projects/code-beautifier/wiki/Wiki")
 
 Also available in [Visual Studio Gallery](http://https://visualstudiogallery.msdn.microsoft.com/febc2d81-34bd-4324-aadb-0a942eb39d43 "Visual Studio Gallery")
 
