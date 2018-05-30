@@ -178,9 +178,6 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ApacheLicense.txt">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Resources\avatar1.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -238,14 +235,17 @@
       <Message Text=" MSBuildProjectDefaultTargets  = $(MSBuildProjectDefaultTargets)" Importance="high"/>
       <Message Text=" MSBuildExtensionsPath  = $(MSBuildExtensionsPath)" Importance="high"/>
       <Message Text=" MSBuildStartupDirectory  = $(MSBuildStartupDirectory)" Importance="high" />-->
-    <SvnVersion LocalPath="$(MSBuildProjectDirectory)\.." ToolPath="">
-      <Output TaskParameter="Revision" PropertyName="RevisionSolution" />
-    </SvnVersion>
-    <SvnVersion LocalPath="$(MSBuildProjectDirectory)" ToolPath="">
-      <Output TaskParameter="Revision" PropertyName="Revision" />
-    </SvnVersion>
-    <FileUpdate Files="Properties\AssemblyInfo.cs" Regex="(\d+)\.(\d+)\.(\d+)\.(\d+)" ReplacementText="$1.$2.$3.$(Revision)" />
+    <GitVersion LocalPath="$(MSBuildProjectDirectory)\.." ToolPath="">
+      <Output TaskParameter="CommitHash" PropertyName="RevisionSolution" />
+    </GitVersion>
     <FileUpdate Files="source.extension.vsixmanifest" Regex="(\d+)\.(\d+)\.(\d+)\.(\d+)" ReplacementText="$1.$2.$3.$(RevisionSolution)" />
+    <Version VersionFile="Version.dat" BuildType="Automatic" RevisionType="Increment">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (

@@ -1,0 +1,6 @@
+*.suo
+.vs
+bin
+obj
+/Installers
+/packages
