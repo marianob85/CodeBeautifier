@@ -102,6 +102,7 @@
     <Compile Include="Sources\DocumentsMaker.cs" />
     <Compile Include="Sources\DocumentsMakerGui.cs" />
     <Compile Include="Sources\Dump.cs" />
+    <Compile Include="Sources\EOLConverter.cs" />
     <Compile Include="Sources\IDocumentsMaker.cs" />
     <Compile Include="Sources\IgnoreFilesFinder.cs" />
     <Compile Include="Sources\Logger.cs" />
@@ -170,6 +171,6 @@
       <Output TaskParameter="Build" PropertyName="Build" />
       <Output TaskParameter="Revision" PropertyName="Revision" />
     </Version>
-    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)"/>
+    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)" />
   </Target>
 </Project>

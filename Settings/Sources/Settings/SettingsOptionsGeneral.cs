@@ -1,11 +1,6 @@
 using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
-using Microsoft.Win32;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace Settings.Sources
 {
@@ -26,7 +21,22 @@ namespace Settings.Sources
             HighWithDump,
         };
 
+        [Flags]
+        public enum EOLType
+        {
+            [XmlEnum( Name = "Ignore" )]
+            Ignore,
+            [XmlEnum( Name = "Windows - CRLF" )]
+            Windows,
+            [XmlEnum( Name = "Unix - LF" )]
+            Unix,
+            [XmlEnum( Name = "Mac - CR" )]
+            Mac,
+        };
+
+
         private LoggerPriority m_loggerPriority = LoggerPriority.Low;
+        private EOLType m_eolType = EOLType.Ignore;
         private bool m_onDocumentSave = false;
         private bool m_onBuildProject = false;
         private bool m_onRebuildProject = false;
@@ -45,6 +55,7 @@ namespace Settings.Sources
         public OptionsGeneral( OptionsGeneral general )
         {
             m_loggerPriority = general.m_loggerPriority;
+            m_eolType = general.m_eolType;
             m_onDocumentSave = general.m_onDocumentSave;
             m_onBuildProject = general.m_onBuildProject;
             m_onRebuildProject = general.m_onRebuildProject;
@@ -178,6 +189,16 @@ namespace Settings.Sources
             set { m_autoFormatOptionsForCSharp = value; }
         }
 
+        [CategoryAttribute( "Experimental" ),
+        ReadOnlyAttribute( false ),
+        DescriptionAttribute( "Replace end of line" ),
+        DisplayName( "Force EOL" )]
+        public EOLType eolType
+        {
+            get { return m_eolType; }
+            set { m_eolType = value; }
+        }
+
         [CategoryAttribute( "Error handler" ),
         DescriptionAttribute( "Create dump file on error" ),
         DisplayName( "Create dump file on error" )]
@@ -209,7 +230,8 @@ namespace Settings.Sources
                     * m_dumpFilePath.GetHashCode() ^ 10
                     * m_createDumpFileOnError.GetHashCode() ^ 11
                     * m_autoFormatOptionsForCSharp.GetHashCode() ^ 13
-                    * m_onDocumentSave.GetHashCode() ^ 14;
+                    * m_onDocumentSave.GetHashCode() ^ 14
+                    * m_eolType.GetHashCode() ^ 15;
         }
 
         public override bool Equals( Object other )
@@ -225,6 +247,7 @@ namespace Settings.Sources
         private bool Equals( OptionsGeneral options )
         {
             return m_loggerPriority.Equals( options.m_loggerPriority )
+                && m_eolType.Equals( options.m_eolType )
                 && m_onBuildProject.Equals( options.m_onBuildProject )
                 && m_onRebuildProject.Equals( options.m_onRebuildProject )
                 && m_onBuildSolution.Equals( options.m_onBuildSolution )

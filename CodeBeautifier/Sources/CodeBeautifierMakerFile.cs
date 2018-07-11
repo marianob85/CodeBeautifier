@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using Settings.Sources;
-using EnvDTE;
 
 namespace Manobit.CodeBeautifier.Sources
 {
@@ -12,8 +10,8 @@ namespace Manobit.CodeBeautifier.Sources
     {
         private ApplicationModeFile m_appModeOptions;
 
-        public MakerUsingFile( IServiceProvider serviceProvider, Options optons, AppOptions appOptions )
-            : base( serviceProvider, optons, appOptions )
+        public MakerUsingFile( IServiceProvider serviceProvider, Options options, AppOptions appOptions )
+            : base( serviceProvider, options, appOptions )
         {
             this.m_appModeOptions = appOptions.appModeFile;
         }
@@ -72,7 +70,29 @@ namespace Manobit.CodeBeautifier.Sources
                 m_logger.Log( e );
                 return false;
             }
+            
+            if( shouldApplyEOL() )
+            {
+                convertEOL( fileName );
+            }
+
             return processCodeBeautifier.ExitCode == 0 ? true : false;
+        }
+
+        protected void convertEOL( string fileName )
+        {
+            Encoding encoding;
+            string buffer;
+            using( StreamReader reader = File.OpenText( fileName ) )
+            {
+                encoding = reader.CurrentEncoding;
+                buffer = reader.ReadToEnd();
+                buffer = EOLConverter.convert( buffer, applayEOLType() );
+            }
+            using( StreamWriter writer = new StreamWriter( File.Open( fileName, FileMode.Create ), encoding ) )
+            {
+                writer.Write( buffer );
+            }
         }
 
         protected override System.String makeText( System.String text, System.String filePath )

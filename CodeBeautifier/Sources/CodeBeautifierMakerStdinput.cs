@@ -107,6 +107,12 @@ namespace Manobit.CodeBeautifier.Sources
                 m_logger.Log( process.StandardError.ReadToEnd() );
                 return null;
             }
+
+            if( shouldApplyEOL() )
+            {
+                output = EOLConverter.convert( output, applayEOLType() );
+            }
+
             return output;
         }
     }

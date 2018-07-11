@@ -163,6 +163,25 @@ namespace Manobit.CodeBeautifier.Sources
             }
         }
 
+        protected bool shouldApplyEOL()
+        {
+            return m_options.general.eolType != OptionsGeneral.EOLType.Ignore;
+        }
+        protected EOLConverter.EOLType applayEOLType()
+        {
+            switch( m_options.general.eolType )
+            {
+                case OptionsGeneral.EOLType.Windows:
+                    return EOLConverter.EOLType.Windows;
+                case OptionsGeneral.EOLType.Unix:
+                    return EOLConverter.EOLType.Unix;
+                case OptionsGeneral.EOLType.Mac:
+                    return EOLConverter.EOLType.Mac;
+                default:
+                    throw new Exception( "Should never be here..." );
+            }
+        }
+
         protected abstract bool makeFile( String fileName, String orgFileName );
 
         protected abstract System.String makeText( System.String text, System.String filePath );
