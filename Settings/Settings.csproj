@@ -214,16 +214,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <!-- Import of the MSBuildCommunityTask targets -->
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
-  <!-- to AssemblyInfo to include svn revision number -->
-  <Target Name="BeforeBuild" Condition="$(Configuration) == 'Release'">
-    <Version VersionFile="Version.dat" BuildType="Automatic" RevisionType="Increment">
-      <Output TaskParameter="Major" PropertyName="Major" />
-      <Output TaskParameter="Minor" PropertyName="Minor" />
-      <Output TaskParameter="Build" PropertyName="Build" />
-      <Output TaskParameter="Revision" PropertyName="Revision" />
-    </Version>
-    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)"/>
-  </Target>
 </Project>

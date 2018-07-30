@@ -222,31 +222,6 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <!-- Import of the MSBuildCommunityTask targets -->
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
-  <!-- to AssemblyInfo to include svn revision number -->
-  <Target Name="BeforeBuild" Condition="$(Configuration) == 'Release'">
-    <!--<Message Text=" MSBuildProjectDirectory  = $(MSBuildProjectDirectory)" Importance="high"/>
-      <Message Text=" MSBuildProjectFile  = $(MSBuildProjectFile)" Importance="high"/>
-      <Message Text=" MSBuildProjectExtension  = $(MSBuildProjectExtension)" Importance="high"/>
-      <Message Text=" MSBuildProjectFullPath  = $(MSBuildProjectFullPath)" Importance="high"/>
-      <Message Text=" MSBuildProjectName  = $(MSBuildProjectName)" Importance="high"/>
-      <Message Text=" MSBuildBinPath  = $(MSBuildBinPath)" Importance="high"/>
-      <Message Text=" MSBuildProjectDefaultTargets  = $(MSBuildProjectDefaultTargets)" Importance="high"/>
-      <Message Text=" MSBuildExtensionsPath  = $(MSBuildExtensionsPath)" Importance="high"/>
-      <Message Text=" MSBuildStartupDirectory  = $(MSBuildStartupDirectory)" Importance="high" />-->
-    <GitVersion LocalPath="$(MSBuildProjectDirectory)\.." ToolPath="">
-      <Output TaskParameter="CommitHash" PropertyName="RevisionSolution" />
-    </GitVersion>
-    <FileUpdate Files="source.extension.vsixmanifest" Regex="(\d+)\.(\d+)\.(\d+)\.(\d+)" ReplacementText="$1.$2.$3.$(RevisionSolution)" />
-    <Version VersionFile="Version.dat" BuildType="Automatic" RevisionType="Increment">
-      <Output TaskParameter="Major" PropertyName="Major" />
-      <Output TaskParameter="Minor" PropertyName="Minor" />
-      <Output TaskParameter="Build" PropertyName="Build" />
-      <Output TaskParameter="Revision" PropertyName="Revision" />
-    </Version>
-    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)" />
-  </Target>
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
 copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)Installers\$(TargetName).2013.vsix" /Y
