@@ -184,6 +184,10 @@
     <Content Include="Resources\cb.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Resources\LICENSE.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Package.ico">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
