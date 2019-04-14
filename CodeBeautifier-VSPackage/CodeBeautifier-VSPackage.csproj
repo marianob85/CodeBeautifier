@@ -252,9 +252,9 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
-copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)Installers\$(TargetName).2013.vsix" /Y
-$(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2013.zip" "$(TargetDir)\*.pdb"
-$(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2013.zip" "$(TargetDir)\*.dll"
+copy "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)Installers\$(TargetName).2017.vsix" /Y
+$(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2017.zip" "$(TargetDir)\*.pdb"
+$(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2017.zip" "$(TargetDir)\*.dll"
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>
