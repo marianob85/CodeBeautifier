@@ -15,3 +15,7 @@ Arid made one little mistake with the path of the file. The correct path has
 %APPDATA%\Microsoft\VisualStudio\8.0\1033\CmdUI.prf
 perhaps you might find the file there too.
 
+VS2019
+
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe
+/rootsuffix Exp
