@@ -63,7 +63,8 @@
     <WarningLevel>4</WarningLevel>
     <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <CreateVsixContainer>False</CreateVsixContainer>
+    <CreateVsixContainer>True</CreateVsixContainer>
+    <DeployExtension>True</DeployExtension>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -252,6 +253,10 @@
     <ProjectReference Include="..\CodeBeautifier\CodeBeautifier.csproj">
       <Project>{905a7078-34db-4f44-9acb-12c3a54d6290}</Project>
       <Name>CodeBeautifier</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiffPlex\DiffPlex.csproj">
+      <Project>{7150f6c1-b1e1-42cd-b68f-ed6004c22286}</Project>
+      <Name>DiffPlex</Name>
     </ProjectReference>
     <ProjectReference Include="..\Settings\Settings.csproj">
       <Project>{bdc1c260-37b9-4895-8b7c-b4b70f02619e}</Project>

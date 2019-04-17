@@ -15,6 +15,8 @@ using Manobit.CodeBeautifier.Sources;
 using Settings.Sources;
 using Settings.Forms;
 using System.Windows.Forms;
+using System.Threading;
+using Task = System.Threading.Tasks.Task;
 
 namespace Manobit.CodeBeautifier
 {
@@ -77,33 +79,24 @@ namespace Manobit.CodeBeautifier
         }
     }
 
-    /// <summary>
-    /// This is the class that implements the package exposed by this assembly.
-    ///
-    /// The minimum requirement for a class to be considered a valid package for Visual Studio
-    /// is to implement the IVsPackage interface and register itself with the shell.
-    /// This package uses the helper classes defined inside the Managed Package Framework (MPF)
-    /// to do it: it derives from the Package class that provides the implementation of the
-    /// IVsPackage interface and uses the registration attributes defined in the framework to
-    /// register itself and its components with the shell.
-    /// </summary>
-    // This attribute tells the PkgDef creation utility (CreatePkgDef.exe) that this class is
-    // a package.
-    [PackageRegistration( UseManagedResourcesOnly = true )]
-    // This attribute is used to register the information needed to show this package
-    // in the Help/About dialog of Visual Studio.
-    [InstalledProductRegistration( "#110", "#112", "1.0", IconResourceID = 400 )]
-    // This attribute is needed to let the shell know that this package exposes some menus.
+    //[PackageRegistration( UseManagedResourcesOnly = true )]
+    //[InstalledProductRegistration( "#110", "#112", "1.0", IconResourceID = 400 )]
     [ProvideMenuResource( "Menus.ctmenu", 1 )]
-    [Guid( GuidList.guidCodeBeautifierPkgString )]
-    [ProvideAutoLoad( UIContextGuids.SolutionExists )]
-    [ProvideAutoLoad( UIContextGuids.NoSolution )]
+    //[ProvideAutoLoad( UIContextGuids.SolutionExists )]
+    //[ProvideAutoLoad( UIContextGuids.NoSolution )]
     [ProvideOptionPage( typeof( OptionPageCustom ), "Manobit", "CodeBeautifier", 0, 0, true )]
-    public sealed class CodeBeautifierPackage : Package
+
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
+    [InstalledProductRegistration("Manobit", "CodeBeautifier", "1.0")]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string, PackageAutoLoadFlags.BackgroundLoad)]
+
+    [Guid( GuidList.guidCodeBeautifierPkgString )]
+    public sealed class CodeBeautifierPackage : AsyncPackage
     {
         private List<CommandEvents> m_commandEvents = new List<CommandEvents>(); // Command need to be saved
         private SettingsContainer m_settings = new SettingsContainer();
-        private DTEEvents m_dteEvents = null;
+        //private DTEEvents m_dteEvents = null;
         private EnvDTE80.TextDocumentKeyPressEvents m_textDocumentEvents = null;
         private EnvDTE.DocumentEvents m_documentEvents = null;
         private bool m_savePending = false;
@@ -126,9 +119,12 @@ namespace Manobit.CodeBeautifier
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
         /// where you can put all the initialization code that rely on services provided by VisualStudio.
         /// </summary>
-        protected override void Initialize()
+        //protected override void Initialize()
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             base.Initialize();
+
+            //await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler( MyHandler );
@@ -136,7 +132,7 @@ namespace Manobit.CodeBeautifier
             m_settings.onOptionsChanged += new EventHandler( onConfigurationChanged );
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
-            OleMenuCommandService mcs = GetService( typeof( IMenuCommandService ) ) as OleMenuCommandService;
+            OleMenuCommandService mcs = await  GetServiceAsync( typeof( IMenuCommandService ) ) as OleMenuCommandService;
             if( null != mcs )
             {
                 // Register new command
@@ -173,9 +169,9 @@ namespace Manobit.CodeBeautifier
                 beforeExecute( "{1496A755-94DE-11D0-8C3F-00C04FC2AAE2}", 1603 ).BeforeExecute += onBuildSelected;
                 beforeExecute( "{1496A755-94DE-11D0-8C3F-00C04FC2AAE2}", 1604 ).BeforeExecute += onReBuildSelected;
 
-                EnvDTE80.DTE2 dte2 = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
-                m_dteEvents = dte2.Events.DTEEvents;
-                m_dteEvents.OnStartupComplete += onStartUpComplete;
+                EnvDTE80.DTE2 dte2 = await GetServiceAsync( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
+                //m_dteEvents = dte2.Events.DTEEvents;
+               // m_dteEvents.OnStartupComplete += onStartUpComplete;
 
                 EnvDTE80.Events2 dteEvents2 = dte2.Events as EnvDTE80.Events2;
 
@@ -184,6 +180,8 @@ namespace Manobit.CodeBeautifier
 
                 m_textDocumentEvents = dteEvents2.get_TextDocumentKeyPressEvents();
                 m_textDocumentEvents.AfterKeyPress += onTextDocumentKeyPressed;
+
+                onStartUpComplete();
             }
         }
 
