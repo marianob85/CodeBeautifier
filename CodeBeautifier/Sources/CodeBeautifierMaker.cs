@@ -10,30 +10,30 @@ namespace Manobit.CodeBeautifier.Sources
 {
     public abstract partial class Maker
     {
-        public static Maker CreateInstance( IServiceProvider serviceProvider, Options options, AppOptions appOptions )
+        public static Maker CreateInstance( EnvDTE80.DTE2 dte2, Options options, AppOptions appOptions )
         {
             switch( appOptions.applicationMode )
             {
                 case ApplicationMode.File:
-                    return new MakerUsingFile( serviceProvider, options, appOptions );
+                    return new MakerUsingFile(dte2, options, appOptions );
                 case ApplicationMode.StdInput:
-                    return new MakerUsingStdInput( serviceProvider, options, appOptions );
+                    return new MakerUsingStdInput(dte2, options, appOptions );
                 default:
                     return null;
             }
         }
 
         protected Logger m_logger;
-        protected IServiceProvider m_serviceProvider;
+        protected EnvDTE80.DTE2 m_dte2 = null;
         protected AppOptions m_appOptions;
         Options m_options;
 
-        public Maker( IServiceProvider serviceProvider, Options options, AppOptions appOptions )
+        public Maker(EnvDTE80.DTE2 dte2, Options options, AppOptions appOptions )
         {
             m_options = options;
             m_appOptions = appOptions;
-            this.m_logger = new Logger( serviceProvider, options );
-            this.m_serviceProvider = serviceProvider;
+            this.m_logger = new Logger(dte2, options );
+            this.m_dte2 = dte2;
         }
 
         protected String configFile( String fileName )
@@ -144,11 +144,11 @@ namespace Manobit.CodeBeautifier.Sources
                 
                 if ( m_options.general.trackChanges)
                 {
-                    documentMaker = new CodeBeautifierDocumentWithtrackChanges(m_serviceProvider);
+                    documentMaker = new CodeBeautifierDocumentWithtrackChanges(m_dte2);
                 }
                 else
                 {
-                    documentMaker = new CodeBeautifierDocument(m_serviceProvider);
+                    documentMaker = new CodeBeautifierDocument(m_dte2);
                 }
                 
 

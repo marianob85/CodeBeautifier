@@ -12,8 +12,8 @@ namespace Manobit.CodeBeautifier.Sources
     {
         private ApplicationModeStdInput m_appModeOptions;
 
-        public MakerUsingStdInput( IServiceProvider serviceProvider, Options optons, AppOptions appOptions )
-            : base( serviceProvider, optons, appOptions )
+        public MakerUsingStdInput(EnvDTE80.DTE2 dte2, Options optons, AppOptions appOptions )
+            : base( dte2, optons, appOptions )
         {
             this.m_appModeOptions = appOptions.appModeStdInput;
         }

@@ -8,7 +8,7 @@ namespace Manobit.CodeBeautifier.Sources
 {
     public class DocumentFinder
     {
-        private IServiceProvider m_serviceProvider;
+        private EnvDTE80.DTE2 m_dte2 = null;
         private Logger m_logger;
 
         protected delegate void EventHandlerProgress( Object sender, EventArgs e, ProjectItem projectItem );
@@ -21,10 +21,10 @@ namespace Manobit.CodeBeautifier.Sources
         protected event EventHandlerFinish Finished = delegate { };
         protected event EventHandlerStart Started = delegate { };
 
-        public DocumentFinder( IServiceProvider serviceProvider, Options settings )
+        public DocumentFinder(EnvDTE80.DTE2 dte2, Options settings )
         {
-            this.m_logger = new Logger( serviceProvider, settings );
-            this.m_serviceProvider = serviceProvider;
+            this.m_logger = new Logger( dte2, settings );
+            this.m_dte2 = dte2;
         }
 
         private void dumpObjects( List<Object> objects )
@@ -42,14 +42,12 @@ namespace Manobit.CodeBeautifier.Sources
 
         virtual public List<Object> opened( bool noSavedOnly )
         {
-            EnvDTE80.DTE2 dte2 = m_serviceProvider.GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
-
             setStart();
 
             m_logger.Log( "DocumentFinder: Searching for opened.", OptionsGeneral.LoggerPriority.High );
 
             List<Object> docContainer = new List<Object>();
-            foreach( Window window in dte2.Windows )
+            foreach( Window window in m_dte2.Windows )
             {
                 if( window.Type == vsWindowType.vsWindowTypeDocument )
                 {
@@ -88,17 +86,16 @@ namespace Manobit.CodeBeautifier.Sources
 
         virtual public List<Object> activeProject()
         {
-            EnvDTE80.DTE2 dte2 = m_serviceProvider.GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
             setStart();
 
             List<Object> docContainer = new List<Object>();
 
-            if( ( dte2.ActiveSolutionProjects as Array ).Length == 0 )
+            if( (m_dte2.ActiveSolutionProjects as Array ).Length == 0 )
             {
                 return docContainer;
             }
 
-            Array projects = dte2.ActiveSolutionProjects as Array;
+            Array projects = m_dte2.ActiveSolutionProjects as Array;
             foreach( EnvDTE.Project project in projects )
             {
                 docContainer.AddRange( getProjectItems( project.ProjectItems ) );
@@ -110,12 +107,11 @@ namespace Manobit.CodeBeautifier.Sources
 
         virtual public List<Object> solution()
         {
-            EnvDTE80.DTE2 dte2 = m_serviceProvider.GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
             setStart();
 
             List<Object> docContainer = new List<Object>();
 
-            foreach( EnvDTE.Project project in dte2.Solution.Projects )
+            foreach( EnvDTE.Project project in m_dte2.Solution.Projects )
             {
                 if( project.ProjectItems != null )
                 {
@@ -129,7 +125,6 @@ namespace Manobit.CodeBeautifier.Sources
 
         protected List<Object> getUIHierarchyItems( UIHierarchyItems uiHItems )
         {
-            EnvDTE80.DTE2 dte2 = m_serviceProvider.GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
             List<Object> docContainer = new List<Object>();
 
             foreach( UIHierarchyItem hItem in uiHItems )
@@ -165,7 +160,6 @@ namespace Manobit.CodeBeautifier.Sources
             {
                 return new List<Object>();
             }
-            EnvDTE80.DTE2 dte2 = m_serviceProvider.GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
             List<Object> docContainer = new List<Object>();
 
             foreach( ProjectItem prjItem in hPrjItems )

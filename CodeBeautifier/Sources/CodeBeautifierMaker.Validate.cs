@@ -51,7 +51,7 @@ namespace Manobit.CodeBeautifier.Sources
             if( m_appOptions.useIgnoreFiles )
             {
                 m_logger.Log( String.Format( "{0}: Searching through ignore files", m_appOptions.name, ext ), OptionsGeneral.LoggerPriority.Medium );
-                IgnoreFilesFinder ignoreFileFinder = new IgnoreFilesFinder(m_serviceProvider, m_options, m_appOptions, fileName);
+                IgnoreFilesFinder ignoreFileFinder = new IgnoreFilesFinder(m_dte2, m_options, m_appOptions, fileName);
 
                 if( ignoreFileFinder.matchedFile() != null  )
                 {

@@ -10,8 +10,8 @@ namespace Manobit.CodeBeautifier.Sources
     {
         private ApplicationModeFile m_appModeOptions;
 
-        public MakerUsingFile( IServiceProvider serviceProvider, Options options, AppOptions appOptions )
-            : base( serviceProvider, options, appOptions )
+        public MakerUsingFile(EnvDTE80.DTE2 dte2, Options options, AppOptions appOptions )
+            : base(dte2, options, appOptions )
         {
             this.m_appModeOptions = appOptions.appModeFile;
         }

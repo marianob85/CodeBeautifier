@@ -20,7 +20,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace Manobit.CodeBeautifier
 {
-
     [Guid( "F9421A4E-1F44-47B5-807D-E4CA88088891" )]
     public class OptionPageCustom : DialogPage
     {
@@ -79,13 +78,8 @@ namespace Manobit.CodeBeautifier
         }
     }
 
-    //[PackageRegistration( UseManagedResourcesOnly = true )]
-    //[InstalledProductRegistration( "#110", "#112", "1.0", IconResourceID = 400 )]
     [ProvideMenuResource( "Menus.ctmenu", 1 )]
-    //[ProvideAutoLoad( UIContextGuids.SolutionExists )]
-    //[ProvideAutoLoad( UIContextGuids.NoSolution )]
     [ProvideOptionPage( typeof( OptionPageCustom ), "Manobit", "CodeBeautifier", 0, 0, true )]
-
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("Manobit", "CodeBeautifier", "1.0")]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
@@ -96,35 +90,19 @@ namespace Manobit.CodeBeautifier
     {
         private List<CommandEvents> m_commandEvents = new List<CommandEvents>(); // Command need to be saved
         private SettingsContainer m_settings = new SettingsContainer();
-        //private DTEEvents m_dteEvents = null;
         private EnvDTE80.TextDocumentKeyPressEvents m_textDocumentEvents = null;
         private EnvDTE.DocumentEvents m_documentEvents = null;
         private bool m_savePending = false;
         private Logger m_logger;
+        private EnvDTE80.DTE2 m_dte2 = null;
 
-        /// <summary>
-        /// Default constructor of the package.
-        /// Inside this method you can place any initialization code that does not require
-        /// any Visual Studio service because at this point the package object is created but
-        /// not sited yet inside Visual Studio environment. The place to do all the other
-        /// initialization is the Initialize method.
-        /// </summary>
         public CodeBeautifierPackage() { }
 
-        /////////////////////////////////////////////////////////////////////////////
-        // Overridden Package Implementation
         #region Package Members
 
-        /// <summary>
-        /// Initialization of the package; this method is called right after the package is sited, so this is the place
-        /// where you can put all the initialization code that rely on services provided by VisualStudio.
-        /// </summary>
-        //protected override void Initialize()
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            base.Initialize();
-
-            //await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler( MyHandler );
@@ -162,6 +140,8 @@ namespace Manobit.CodeBeautifier
                 mcs.AddCommand( menuSelectedProject );
                 mcs.AddCommand( menuSolution );
 
+                m_dte2 = await GetServiceAsync(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
+
                 beforeExecute( "{5EFC7975-14BC-11CF-9B2B-00AA00573819}", 882 ).BeforeExecute += onBuildSolution;
                 beforeExecute( "{5EFC7975-14BC-11CF-9B2B-00AA00573819}", 883 ).BeforeExecute += onReBuildSolution;
                 beforeExecute( "{5EFC7975-14BC-11CF-9B2B-00AA00573819}", 886 ).BeforeExecute += onBuildSelected;
@@ -169,19 +149,14 @@ namespace Manobit.CodeBeautifier
                 beforeExecute( "{1496A755-94DE-11D0-8C3F-00C04FC2AAE2}", 1603 ).BeforeExecute += onBuildSelected;
                 beforeExecute( "{1496A755-94DE-11D0-8C3F-00C04FC2AAE2}", 1604 ).BeforeExecute += onReBuildSelected;
 
-                EnvDTE80.DTE2 dte2 = await GetServiceAsync( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
-                //m_dteEvents = dte2.Events.DTEEvents;
-               // m_dteEvents.OnStartupComplete += onStartUpComplete;
-
-                EnvDTE80.Events2 dteEvents2 = dte2.Events as EnvDTE80.Events2;
-
+                EnvDTE80.Events2 dteEvents2 = m_dte2.Events as EnvDTE80.Events2;
                 m_documentEvents = dteEvents2.get_DocumentEvents();
                 m_documentEvents.DocumentSaved += onDocumentSaved;
 
                 m_textDocumentEvents = dteEvents2.get_TextDocumentKeyPressEvents();
                 m_textDocumentEvents.AfterKeyPress += onTextDocumentKeyPressed;
 
-                onStartUpComplete();
+                onConfigurationChanged(null, null);
             }
         }
 
@@ -209,23 +184,16 @@ namespace Manobit.CodeBeautifier
                     return;
                 }
 
-                DocumentsMakerSingle documentsMaker = new DocumentsMakerSingle( this, m_settings.options );
+                DocumentsMakerSingle documentsMaker = new DocumentsMakerSingle(m_dte2, m_settings.options );
                 documentsMaker.make( new DocumentsMakerSingle.KeyPressedData( Selection, Keypress ) );
             }
         }
 
         private CommandEvents beforeExecute( String guid, int cmdID )
         {
-            EnvDTE80.DTE2 dte2 = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
-
-            var commandEvent = dte2.Events.CommandEvents[ guid, cmdID ];
+            var commandEvent = m_dte2.Events.CommandEvents[ guid, cmdID ];
             m_commandEvents.Add( commandEvent );
             return commandEvent;
-        }
-
-        private void onStartUpComplete()
-        {
-            onConfigurationChanged( null, null );
         }
 
         private void onBuildSolution( string guid, int id, object customIn, object customOut, ref bool cancelDefault )
@@ -293,9 +261,7 @@ namespace Manobit.CodeBeautifier
         {
             if( statusCurrentDocument() )
             {
-                EnvDTE80.DTE2 dte2 = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
-
-                makeDocument( dte2.ActiveDocument );
+                makeDocument(m_dte2.ActiveDocument );
             }
         }
 
@@ -307,9 +273,7 @@ namespace Manobit.CodeBeautifier
 
         private bool statusCurrentDocument()
         {
-            EnvDTE.DTE dte = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE.DTE;
-
-            return dte.ActiveDocument != null;
+            return m_dte2.ActiveDocument != null;
         }
 
         private void callbackAllOpenDocuments( object sender, EventArgs e )
@@ -321,10 +285,8 @@ namespace Manobit.CodeBeautifier
         {
             var myCommand = sender as OleMenuCommand;
 
-            EnvDTE.DTE dte = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE.DTE;
-
             myCommand.Enabled = false;
-            foreach( EnvDTE.Window window in dte.Windows )
+            foreach( EnvDTE.Window window in m_dte2.Windows )
             {
                 myCommand.Enabled |= window.Type == EnvDTE.vsWindowType.vsWindowTypeDocument;
             }
@@ -332,11 +294,11 @@ namespace Manobit.CodeBeautifier
 
         private void callbackSelectedProject( object sender, EventArgs e )
         {
-            DocumentFinderGUI finderGui = new DocumentFinderGUI( this, m_settings.options );
+            DocumentFinderGUI finderGui = new DocumentFinderGUI( m_dte2, m_settings.options );
 
             List<Object> documents = finderGui.activeProject();
 
-            DocumentsMakerGui documentsMaker = new DocumentsMakerGui( this, m_settings.options );
+            DocumentsMakerGui documentsMaker = new DocumentsMakerGui( m_dte2, m_settings.options );
             documentsMaker.make( documents );
         }
 
@@ -344,11 +306,9 @@ namespace Manobit.CodeBeautifier
         {
             var myCommand = sender as OleMenuCommand;
 
-            EnvDTE.DTE dte = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE.DTE;
-
             try
             {
-                System.Array activeProjects = dte.ActiveSolutionProjects as System.Array;
+                System.Array activeProjects = m_dte2.ActiveSolutionProjects as System.Array;
                 myCommand.Enabled = activeProjects.Length > 0;
             }
             catch( Exception )
@@ -359,13 +319,11 @@ namespace Manobit.CodeBeautifier
 
         private void callbackSolution( object sender, EventArgs e )
         {
-            EnvDTE.DTE dte = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE.DTE;
-
-            DocumentFinderGUI finderGui = new DocumentFinderGUI( this, m_settings.options );
+            DocumentFinderGUI finderGui = new DocumentFinderGUI(m_dte2, m_settings.options );
 
             List<Object> documents = finderGui.solution();
 
-            DocumentsMakerGui documentsMaker = new DocumentsMakerGui( this, m_settings.options );
+            DocumentsMakerGui documentsMaker = new DocumentsMakerGui(m_dte2, m_settings.options );
             documentsMaker.make( documents );
         }
 
@@ -373,11 +331,9 @@ namespace Manobit.CodeBeautifier
         {
             var myCommand = sender as OleMenuCommand;
 
-            EnvDTE.DTE dte = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE.DTE;
-
             try
             {
-                myCommand.Enabled = dte.Solution.Projects.Count > 0;
+                myCommand.Enabled = m_dte2.Solution.Projects.Count > 0;
             }
             catch( Exception )
             {
@@ -387,23 +343,21 @@ namespace Manobit.CodeBeautifier
 
         private void makeAllOpened( bool noSavedOnly )
         {
-            DocumentFinderGUI finderGui = new DocumentFinderGUI( this, m_settings.options );
+            DocumentFinderGUI finderGui = new DocumentFinderGUI(m_dte2, m_settings.options );
 
             List<Object> documents = finderGui.opened( noSavedOnly );
 
-            DocumentsMakerGui documentsMaker = new DocumentsMakerGui( this, m_settings.options );
+            DocumentsMakerGui documentsMaker = new DocumentsMakerGui(m_dte2, m_settings.options );
             documentsMaker.make( documents );
         }
 
         private void makeCurrent()
         {
-            EnvDTE80.DTE2 dte2 = GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
-
-            switch( dte2.ActiveWindow.Type )
+            switch( m_dte2.ActiveWindow.Type )
             {
                 case vsWindowType.vsWindowTypeDocument:
                     {
-                        Document activeDocument = dte2.ActiveDocument as Document;
+                        Document activeDocument = m_dte2.ActiveDocument as Document;
                         if( !activeDocument.Saved )
                         {
                             makeDocument( activeDocument );
@@ -424,7 +378,7 @@ namespace Manobit.CodeBeautifier
 
             if ( objects.Count > 0 )
             {
-                IDocumentsMaker docMaker = new DocumentsMakerSingle(this, m_settings.options);
+                IDocumentsMaker docMaker = new DocumentsMakerSingle(m_dte2, m_settings.options);
                 docMaker.make(objects);
             }
         }
@@ -432,7 +386,7 @@ namespace Manobit.CodeBeautifier
         private void onConfigurationChanged( Object sender, EventArgs e )
         {
             m_settings.read();
-            m_logger = new Logger( this, m_settings.options );
+            m_logger = new Logger( m_dte2, m_settings.options );
         }
         private void MyHandler( object sender, UnhandledExceptionEventArgs args )
         {

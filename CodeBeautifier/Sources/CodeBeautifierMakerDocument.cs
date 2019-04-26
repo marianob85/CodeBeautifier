@@ -36,20 +36,18 @@ namespace Manobit.CodeBeautifier.Sources
 
         private List<BreakpointStorage> m_breakpointStorage = new List<BreakpointStorage>();
         private String m_file;
-        private IServiceProvider m_serviceProvider;
+        private EnvDTE80.DTE2 m_dte2 = null;
 
-        public BreakpointsManager(IServiceProvider serviceProvider)
+        public BreakpointsManager(EnvDTE80.DTE2 dte2)
         {
-            m_serviceProvider = serviceProvider;
+            m_dte2 = dte2;
         }
 
         public void Save(String file, bool remove)
         {
-            EnvDTE80.DTE2 dte2 = m_serviceProvider.GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
-
             m_file = file;
             m_breakpointStorage.Clear();
-            foreach (Breakpoint BP in dte2.Debugger.Breakpoints)
+            foreach (Breakpoint BP in m_dte2.Debugger.Breakpoints)
             {
                 if (file.CompareTo(BP.File) == 0)
                 {
@@ -65,10 +63,8 @@ namespace Manobit.CodeBeautifier.Sources
 
         public void Restore()
         {
-            EnvDTE80.DTE2 dte2 = m_serviceProvider.GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
-
             // Delete old breakpoints
-            foreach (Breakpoint BP in dte2.Debugger.Breakpoints)
+            foreach (Breakpoint BP in m_dte2.Debugger.Breakpoints)
             {
                 if (m_file.CompareTo(BP.File) == 0)
                 {
@@ -79,9 +75,9 @@ namespace Manobit.CodeBeautifier.Sources
             {
                 try
                 {
-                    dte2.Debugger.Breakpoints.Add("", BP.file, BP.line, BP.column, BP.condition, BP.conditionType, BP.language, "", 0, "", BP.hitCount, BP.hitCountType);
+                    m_dte2.Debugger.Breakpoints.Add("", BP.file, BP.line, BP.column, BP.condition, BP.conditionType, BP.language, "", 0, "", BP.hitCount, BP.hitCountType);
 
-                    foreach (Breakpoint DTEBP in dte2.Debugger.Breakpoints)
+                    foreach (Breakpoint DTEBP in m_dte2.Debugger.Breakpoints)
                     {
                         try
                         {
@@ -151,17 +147,17 @@ namespace Manobit.CodeBeautifier.Sources
 
     public class CodeBeautifierDocument : ICodeBeautifierDocument
     {
-        protected IServiceProvider m_serviceProvider;
+        protected EnvDTE80.DTE2 m_dte2 = null;
 
-        public CodeBeautifierDocument(IServiceProvider serviceProvider )
+        public CodeBeautifierDocument(EnvDTE80.DTE2 dte2)
         {
-            m_serviceProvider = serviceProvider;
+            m_dte2 = dte2;
         }
 
         public bool make(TextDocument textDocument, String orgText, String newText)
         {
             Document hDocument = textDocument.Parent as Document;
-            BreakpointsManager hBPMgr = new BreakpointsManager(m_serviceProvider);
+            BreakpointsManager hBPMgr = new BreakpointsManager(m_dte2);
             BookmarkManager hBMMgr = new BookmarkManager();
 
             hBPMgr.Save(hDocument.FullName, false);
@@ -189,16 +185,16 @@ namespace Manobit.CodeBeautifier.Sources
 
     public class CodeBeautifierDocumentWithtrackChanges : ICodeBeautifierDocument
     {
-        protected IServiceProvider m_serviceProvider;
+        protected EnvDTE80.DTE2 m_dte2 = null;
 
-        public CodeBeautifierDocumentWithtrackChanges(IServiceProvider serviceProvider)
+        public CodeBeautifierDocumentWithtrackChanges(EnvDTE80.DTE2 dte2)
         {
-            m_serviceProvider = serviceProvider;
+            m_dte2 = dte2;
         }
 
         public bool make(TextDocument textDocument, String orgText, String newText)
         {
-            BreakpointsManager hBPMgr = new BreakpointsManager(m_serviceProvider);
+            BreakpointsManager hBPMgr = new BreakpointsManager(m_dte2);
             BookmarkManager hBMMgr = new BookmarkManager();
             Document hDocument = textDocument.Parent as Document;
 

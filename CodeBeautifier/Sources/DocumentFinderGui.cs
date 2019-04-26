@@ -11,8 +11,8 @@ namespace Manobit.CodeBeautifier.Sources
         private Thread m_worker;
         private List<Object> m_returnObjects = new List<object>();
 
-        public DocumentFinderGUI( IServiceProvider serviceProvider, Options settings )
-            : base( serviceProvider, settings ) { }
+        public DocumentFinderGUI(  EnvDTE80.DTE2 dte2, Options settings )
+            : base(dte2, settings ) { }
 
         public override List<Object> opened( bool noSavedOnly )
         {

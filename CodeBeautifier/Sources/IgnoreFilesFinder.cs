@@ -14,10 +14,10 @@ namespace Manobit.CodeBeautifier.Sources
         private string m_ignoreEntry = null;
         private readonly string m_cbIgnore = ".cbignore";
 
-        public IgnoreFilesFinder( IServiceProvider serviceProvider, Options options,AppOptions appOptions, string fileNamePath )
+        public IgnoreFilesFinder(EnvDTE80.DTE2 dte2, Options options,AppOptions appOptions, string fileNamePath )
         {
             m_appOptions = appOptions;
-            this.m_logger = new Logger( serviceProvider, options );
+            this.m_logger = new Logger(dte2, options );
 
             m_logger.Log( String.Format( "Ignore file: Searching for file: {0}", m_cbIgnore ), OptionsGeneral.LoggerPriority.High );
 

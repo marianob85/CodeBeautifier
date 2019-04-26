@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="c2024206-0b8d-4e03-9ad0-4cc3bfe60dea" Version="1.3.0.0" Language="en-US" Publisher="Mariusz Brzeski" />
+        <Identity Id="c2024206-0b8d-4e03-9ad0-4cc3bfe60dea" Version="1.4.0.0" Language="en-US" Publisher="Mariusz Brzeski" />
         <DisplayName>CodeBeautifier</DisplayName>
         <Description xml:space="preserve">Code beautifier front end Add-in for Visual Studio evironment. Allows to use of any external code format application. </Description>
         <MoreInfo>http://www.manobit.com/code-beautifier-for-visual-studio/</MoreInfo>
         <License>Resources\LICENSE.txt</License>
-        <GettingStartedGuide>http://issues.manobit.com/projects/code-beautifier/wiki/Wiki</GettingStartedGuide>
-        <ReleaseNotes>http://issues.manobit.com/news/1-change-log</ReleaseNotes>
+        <GettingStartedGuide>https://github.com/marianob85/CodeBeautifier/wiki</GettingStartedGuide>
+        <ReleaseNotes>https://github.com/marianob85/CodeBeautifier/commits/master</ReleaseNotes>
         <Icon>Resources\Package.ico</Icon>
         <PreviewImage>Resources\cb.png</PreviewImage>
         <Tags>beautifier, clang, code, code formatting, format, formatting, indentation, uncrustify, Visual Studo</Tags>

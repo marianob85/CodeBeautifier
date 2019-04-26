@@ -13,11 +13,10 @@ namespace Manobit.CodeBeautifier.Sources
         private Options m_settings;
         private EnvDTE.OutputWindowPane m_outputWindowPane;
 
-        public Logger( IServiceProvider serviceProvider, Options settings )
+        public Logger( EnvDTE80.DTE2 dte2, Options settings )
         {
             m_settings = settings;
-            EnvDTE80.DTE2 dte2 = serviceProvider.GetService( typeof( EnvDTE.DTE ) ) as EnvDTE80.DTE2;
-
+            
             try
             {
                 m_outputWindowPane = dte2.ToolWindows.OutputWindow.OutputWindowPanes.Item( m_windowPaneName );

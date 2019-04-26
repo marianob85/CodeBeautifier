@@ -12,8 +12,8 @@ namespace Manobit.CodeBeautifier.Sources
         private System.Threading.Thread m_worker;
         private List<Object> m_objects = null;
 
-        public DocumentsMakerGui( IServiceProvider serviceProvider, Options settings )
-            : base( serviceProvider, settings ) {}
+        public DocumentsMakerGui(EnvDTE80.DTE2 dte2, Options settings )
+            : base( dte2, settings ) {}
 
         public override bool make( List<Object> objects )
         {

@@ -19,7 +19,7 @@ namespace Manobit.CodeBeautifier.Sources
         protected event EventHandlerFinish Finished = delegate { };
         protected event EventHandlerStart Started = delegate { };
 
-        protected IServiceProvider m_serviceProvider;
+        protected EnvDTE80.DTE2 m_dte2 = null;
         private Logger m_logger;
         protected Options m_settings;
         protected bool m_cancelPending = false;
@@ -43,10 +43,10 @@ namespace Manobit.CodeBeautifier.Sources
             }
         }
 
-        public DocumentsMakerSingle( IServiceProvider serviceProvider, Options settings )
+        public DocumentsMakerSingle(EnvDTE80.DTE2 dte2, Options settings )
         {
-            this.m_logger = new Logger( serviceProvider, settings );
-            m_serviceProvider = serviceProvider;
+            this.m_logger = new Logger( dte2, settings );
+            m_dte2 = dte2;
             m_settings = settings;
         }
 
@@ -70,7 +70,7 @@ namespace Manobit.CodeBeautifier.Sources
                             continue;
                         }
                         bool maked = false;
-                        Maker maker = Maker.CreateInstance( m_serviceProvider, m_settings, param );
+                        Maker maker = Maker.CreateInstance(m_dte2, m_settings, param );
                         if( obj is String )
                         {
                             ProgressA( this, null, obj as String, stCount, stMax, stSuccess, stFailed );
@@ -113,7 +113,7 @@ namespace Manobit.CodeBeautifier.Sources
             {
                 foreach( AppOptions param in m_settings.AppList )
                 {
-                    Maker maker = Maker.CreateInstance( m_serviceProvider, m_settings, param );
+                    Maker maker = Maker.CreateInstance(m_dte2, m_settings, param );
                     maker.make( keyPressedData );
                 }
             }
