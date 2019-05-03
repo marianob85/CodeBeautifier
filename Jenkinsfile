@@ -27,7 +27,7 @@ pipeline
 		
 		stage('Archive'){
 			steps {
-				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/bin/Release/*.vsix', onlyIfSuccessful: true
+				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/out/Release/*.vsix', onlyIfSuccessful: true
 			}
 		}
 		
