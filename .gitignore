@@ -6,3 +6,9 @@ obj
 /packages
 *.csproj.user
 /CodeBeautifier-VSPackage/out
+/CodeBeautifier-VSPackage/Properties/AssemblyInfo.cs
+/CodeBeautifier/Properties/AssemblyInfo.cs
+/DiffPlex/Properties/AssemblyInfo.cs
+/Settings/Properties/AssemblyInfo.cs
+/SettingsCheck/Properties/AssemblyInfo.cs
+/UnitTest/Properties/AssemblyInfo.cs
