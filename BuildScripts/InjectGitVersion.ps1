@@ -5,15 +5,11 @@
 
 $productVersion = "1.4.0.";
 
-$gitVersion = git describe --long --always;
-$gitVersion -match '.*-(\d+)-[g](\w+)$';
-$gitCount = $Matches[1];
-$gitSHA1 = $Matches[2];
-
-$gitBranch = git describe --all --exact-match
-$gitBranch -match '.*/([\w\d]+)$';
+$gitVersion = git describe --all --long --always --first-parent;
+$gitVersion -match '.*/([\w\d]+)-(\d+)-[g](\w+)$';
 $gitTag = $Matches[1];
-
+$gitCount = $Matches[2];
+$gitSHA1 = $Matches[3];
 
 # Define file variables
 $assemblyFile = $args[0] + "\Properties\AssemblyInfo.cs";
