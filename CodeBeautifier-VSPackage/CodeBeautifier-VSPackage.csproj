@@ -301,4 +301,9 @@ $(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2017.zip" 
     <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\build\Microsoft.VisualStudio.Threading.Analyzers.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.209\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>if $(ConfigurationName) == Release (
+powershell -ExecutionPolicy ByPass -File  $(SolutionDir)\BuildScripts\InjectGitVersion.ps1 $(ProjectDir)
+)</PreBuildEvent>
+  </PropertyGroup>
 </Project>
