@@ -304,6 +304,7 @@ $(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2017.zip" 
   <PropertyGroup>
     <PreBuildEvent>if $(ConfigurationName) == Release (
 powershell -ExecutionPolicy ByPass -File  $(SolutionDir)\BuildScripts\InjectGitVersion.ps1 $(ProjectDir)
+powershell -ExecutionPolicy ByPass -File  $(SolutionDir)\BuildScripts\InjectGitVersion_vsixmanifest.ps1 $(ProjectDir)
 )</PreBuildEvent>
   </PropertyGroup>
 </Project>
