@@ -12,8 +12,8 @@ pipeline
 	{
 		stage('Build'){
 			steps {
+				powershell '.\BuildScripts\InjectGitVersion.ps1 -Version $env:BUILD_NUMBER'
 				bat '''
-					//call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\VsMSBuildCmd.bat"
 					call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
 					nuget restore CodeBeautifier.sln
 					msbuild CodeBeautifier.sln /t:Rebuild /p:Configuration=Release;Platform="Any CPU" /flp:logfile=warnings.log;warningsonly'''
