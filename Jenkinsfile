@@ -12,7 +12,7 @@ pipeline
 	{
 		stage('Build'){
 			steps {
-				powershell '.\BuildScripts\InjectGitVersion.ps1 -Version $env:BUILD_NUMBER'
+				powershell './BuildScripts/InjectGitVersion.ps1 -Version $env:BUILD_NUMBER'
 				bat '''
 					call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
 					nuget restore CodeBeautifier.sln
