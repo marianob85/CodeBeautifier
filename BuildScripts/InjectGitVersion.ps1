@@ -1,8 +1,8 @@
-
- param (
+param (
     [Parameter(Mandatory=$true)][string]$Version
- )
+)
 
+$PSDefaultParameterValues = @{ '*:Encoding' = 'utf8' }
 $productVersion = "1.4.";
 $revision = "0";
 
