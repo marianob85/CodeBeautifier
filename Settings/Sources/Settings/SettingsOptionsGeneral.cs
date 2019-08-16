@@ -26,11 +26,11 @@ namespace Settings.Sources
         {
             [XmlEnum( Name = "Ignore" )]
             Ignore,
-            [XmlEnum( Name = "Windows - CRLF" )]
+            [XmlEnum( Name = "Windows-CRLF" )]
             Windows,
-            [XmlEnum( Name = "Unix - LF" )]
+            [XmlEnum( Name = "Unix-LF" )]
             Unix,
-            [XmlEnum( Name = "Mac - CR" )]
+            [XmlEnum( Name = "Mac-CR" )]
             Mac,
         };
 
