@@ -7,12 +7,20 @@ properties(
 
 pipeline
 {
-	agent { node { label 'windows10x64 && development' } }
+	agent { 
+		node { 
+			label 'windows10x64 && development' 
+		}
+	}
+	options {
+		skipDefaultCheckout true
+	}
 	stages
 	{
 		stage('Build'){
 			steps {
 				dir('build') {
+					checkout scm
 					powershell './BuildScripts/InjectGitVersion.ps1 -Version $env:BUILD_NUMBER'
 					bat '''
 						call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
@@ -60,4 +68,30 @@ pipeline
 			}
 		}
 	}
+	post { 
+        failure { 
+            notifyFailed()
+        }
+		success { 
+            notifySuccessful()
+        }
+		unstable { 
+            notifyFailed()
+        }
+    }
+}
+
+
+def notifySuccessful() {
+	echo 'Sending e-mail'
+	mail (to: 'notifier@manobit.com',
+         subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success build",
+         body: "Please go to ${env.BUILD_URL}.");
+}
+
+def notifyFailed() {
+	echo 'Sending e-mail'
+	mail (to: 'notifier@manobit.com',
+         subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failure",
+         body: "Please go to ${env.BUILD_URL}.");
 }
