@@ -42,7 +42,7 @@ pipeline
 				dir('compile_check') {
 					unstash "warningsFiles"
 					script {
-						def warn_x86 = scanForIssues sourceCodeEncoding: 'UTF-8', tool: msBuild(id: 'msvc', pattern: 'warnings.log')
+						def warn = scanForIssues sourceCodeEncoding: 'UTF-8', tool: msBuild(id: 'msvc', pattern: 'warnings.log')
 						publishIssues failedTotalAll: 1, issues: [warn], name: 'Win compilation warnings'	
 					}
 				}
