@@ -12,28 +12,51 @@ pipeline
 	{
 		stage('Build'){
 			steps {
-				powershell './BuildScripts/InjectGitVersion.ps1 -Version $env:BUILD_NUMBER'
-				bat '''
-					call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
-					nuget restore CodeBeautifier.sln
-					msbuild CodeBeautifier.sln /t:Rebuild /p:Configuration=Release;Platform="Any CPU" /flp:logfile=warnings.log;warningsonly'''
+				dir('build') {
+					powershell './BuildScripts/InjectGitVersion.ps1 -Version $env:BUILD_NUMBER'
+					bat '''
+						call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
+						nuget restore CodeBeautifier.sln
+						msbuild CodeBeautifier.sln /t:Rebuild /p:Configuration=Release;Platform="Any CPU" /flp:logfile=warnings.log;warningsonly
+						'''
+					stash includes: "warnings.log", name: "warningsFiles"
+					stash includes: 'Installers/*, CodeBeautifier-VSPackage/out/Release/*.vsix', name: "bin"
+				}
+			}
+			post {   
+				cleanup {
+					cleanWs deleteDirs: true
+				}
 			}
 		}
 		stage('Compile check'){
 			steps {
-				warnings canComputeNew: false, canResolveRelativePaths: false, defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', messagesPattern: '', parserConfigurations: [[parserName: 'MSBuild', pattern: 'warnings.log']], unHealthy: ''
+				dir('compile_check') {
+					unstash "warningsFiles"
+					script {
+						def warn_x86 = scanForIssues sourceCodeEncoding: 'UTF-8', tool: msBuild(id: 'msvc', pattern: 'warnings.log')
+						publishIssues failedTotalAll: 1, issues: [warn], name: 'Win compilation warnings'	
+					}
+				}
+			}
+			post {   
+				cleanup {
+					cleanWs deleteDirs: true
+				}
 			}
 		}
 		
 		stage('Archive'){
 			steps {
-				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/out/Release/*.vsix', onlyIfSuccessful: true
+				dir('artifacts') {
+					unstash "bin"
+					archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/out/Release/*.vsix', onlyIfSuccessful: true
+				}
 			}
-		}
-		
-		stage('CleanUp'){
-			steps {
-				deleteDir()
+			post {   
+				cleanup {
+					cleanWs deleteDirs: true
+				}
 			}
 		}
 	}
