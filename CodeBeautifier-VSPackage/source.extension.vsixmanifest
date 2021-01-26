@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="c2024206-0b8d-4e03-9ad0-4cc3bfe60dea" Version="1.4.10.0" Language="en-US" Publisher="Mariusz Brzeski" />
+        <Identity Id="c2024206-0b8d-4e03-9ad0-4cc3bfe60dea" Version="1.4.0.0" Language="en-US" Publisher="Mariusz Brzeski" />
         <DisplayName>CodeBeautifier</DisplayName>
         <Description xml:space="preserve">Code beautifier front end Add-in for Visual Studio evironment. Allows to use of any external code format application. </Description>
         <MoreInfo>http://www.manobit.com/code-beautifier-for-visual-studio/</MoreInfo>

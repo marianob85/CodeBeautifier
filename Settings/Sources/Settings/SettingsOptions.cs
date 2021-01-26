@@ -52,6 +52,8 @@ namespace Settings.Sources
             RegistryKey sub_key = reg_key.CreateSubKey( "Manobit" );
 
             byte[] settings = (byte[])sub_key.GetValue( "Options" );
+            if (settings == null)
+                return new Options();
             return deserialize( new MemoryStream( settings ) );
 
         }

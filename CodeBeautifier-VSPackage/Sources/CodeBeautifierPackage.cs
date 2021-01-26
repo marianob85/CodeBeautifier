@@ -371,7 +371,7 @@ namespace Manobit.CodeBeautifier
         {
             List<Object> objects = new List<Object>();
 
-            if (document.ProjectItem.Document != null)
+            if (document.ProjectItem!= null && document.ProjectItem.Document != null)
                 objects.Add( document.ProjectItem.Document );
             else if (m_settings.options.general.handleNoneProjectFile)
                 objects.Add( document );
