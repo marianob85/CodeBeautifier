@@ -13,9 +13,9 @@
         <Tags>beautifier, clang, code, code formatting, format, formatting, indentation, uncrustify, Visual Studo</Tags>
     </Metadata>
     <Installation>
-		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17)" />
-        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[15.0,17)" />
-        <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[15.0,17)" />
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[15.0,17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[15.0,17.0)" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
@@ -24,6 +24,6 @@
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,17)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,17.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
 </PackageManifest>
