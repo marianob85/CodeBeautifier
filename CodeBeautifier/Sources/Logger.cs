@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio;
 using Settings.Sources;
-using System.Diagnostics;
 
 namespace Manobit.CodeBeautifier.Sources
 {
