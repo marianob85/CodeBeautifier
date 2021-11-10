@@ -213,8 +213,8 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
-$(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2017.zip" "$(TargetDir)\*.pdb"
-$(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2017.zip" "$(TargetDir)\*.dll"
+$(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2022.zip" "$(TargetDir)\*.pdb"
+$(SolutionDir)\7za a -y -tzip "$(SolutionDir)Installers\$(TargetName).2022.zip" "$(TargetDir)\*.dll"
 )</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.17.0.64\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.17.0.64\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
