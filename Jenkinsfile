@@ -11,6 +11,9 @@ pipeline
 	options {
 		skipDefaultCheckout true
 	}
+	environment {
+		GITHUB_TOKEN = credentials('marianob85-github-jenkins')
+	}
 	stages
 	{
 		stage('Build'){
@@ -51,6 +54,26 @@ pipeline
 			steps {
 				unstash "bin"
 				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/out/Release/*.vsix', onlyIfSuccessful: true
+			}
+		}
+		
+		stage('Release') {
+			when {
+				buildingTag()
+			}
+			agent{ label "linux/u18.04/go:1.15.13" }
+			steps {
+				unstash 'bin'
+				sh '''
+					export GOPATH=${PWD}
+					go get github.com/github-release/github-release
+					bin/github-release release --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${TAG_NAME}
+					for filename in CodeBeautifier-VSPackage/out/Release/*.vsix; do
+						[ -e "$filename" ] || continue
+						basefilename=$(basename "$filename")
+						bin/github-release upload --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${basefilename} --file ${filename}
+					done
+				'''
 			}
 		}
 	}
