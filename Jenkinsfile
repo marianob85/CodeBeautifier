@@ -20,6 +20,9 @@ pipeline
 			agent{ label "windows/buildtools2019" }
 			steps {
 				checkout scm
+				script {
+					env.GITHUB_REPO = sh(script: 'basename $(git remote get-url origin) .git', returnStdout: true).trim()
+				}
 				powershell './BuildScripts/InjectGitVersion.ps1 -Version $env:BUILD_NUMBER'
 				bat '''
 					call "C:/BuildTools/VC/Auxiliary/Build/vcvars64.bat"
@@ -32,6 +35,7 @@ pipeline
 			}
 		}
 		stage('UnitTests'){
+			agent{ label "windows/buildtools2019" }
 			steps {
 				unstash "unitTest"
 				powershell '''
@@ -41,6 +45,7 @@ pipeline
 			}
 		}
 		stage('Compile check'){
+			agent any
 			steps {
 				unstash "warningsFiles"
 				script {
@@ -51,6 +56,7 @@ pipeline
 		}
 		
 		stage('Archive'){
+			agent any
 			steps {
 				unstash "bin"
 				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/out/Release/*.vsix', onlyIfSuccessful: true
@@ -66,12 +72,12 @@ pipeline
 				unstash 'bin'
 				sh '''
 					export GOPATH=${PWD}
-					go get github.com/github-release/github-release
-					bin/github-release release --user marianob85 --repo ${GITHUB_REPO} --tag "${TAG_NAME}" --name "${TAG_NAME}"
+					go install github.com/github-release/github-release@v0.10.0
+					bin/github-release release --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${TAG_NAME}
 					for filename in CodeBeautifier-VSPackage/out/Release/*.vsix; do
 						[ -e "$filename" ] || continue
 						basefilename=$(basename "$filename")
-						bin/github-release upload --user marianob85 --repo ${GITHUB_REPO} --tag "${TAG_NAME}" --name ${basefilename} --file ${filename}
+						bin/github-release upload --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${basefilename} --file ${filename}
 					done
 				'''
 			}
