@@ -72,11 +72,11 @@ pipeline
 				unstash 'bin'
 				sh '''
 					go install github.com/github-release/github-release@v0.10.0
-					bin/github-release release --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${TAG_NAME}
+					github-release release --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${TAG_NAME}
 					for filename in CodeBeautifier-VSPackage/out/Release/*.vsix; do
 						[ -e "$filename" ] || continue
 						basefilename=$(basename "$filename")
-						bin/github-release upload --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${basefilename} --file ${filename}
+						github-release upload --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${basefilename} --file ${filename}
 					done
 				'''
 			}
