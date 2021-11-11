@@ -67,11 +67,10 @@ pipeline
 			when {
 				buildingTag()
 			}
-			agent{ label "linux/u18.04/go:1.15.13" }
+			agent{ label "linux/u18.04/go:1.17.3" }
 			steps {
 				unstash 'bin'
 				sh '''
-					export GO111MODULE=auto
 					go install github.com/github-release/github-release@v0.10.0
 					bin/github-release release --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${TAG_NAME}
 					for filename in CodeBeautifier-VSPackage/out/Release/*.vsix; do
