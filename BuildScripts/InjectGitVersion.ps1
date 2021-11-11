@@ -9,9 +9,20 @@ $revision = "0";
 $fileNames = Get-ChildItem -Path (Split-Path -Parent $PSScriptRoot) -Recurse -Include *.template
 
 $gitVersion = git describe --all --long --always --first-parent;
-$gitVersion -match '.*/([\w\d]+)-(\d+)-[g](\w+)$';
+$match = $gitVersion -match '.*/([\w\d-]+)-(\d+)-[g](\w+)$';
+if ( -not $match ){
+    Write-Host ( "Can not determine git version: {0}" -f $gitVersion );
+    exit 1;
+}
+
 $gitTag = $Matches[1];
 $gitSHA1 = $Matches[3];
+
+$fileVersion = $productVersion + $Version + "." + $revision;
+$InfoVersion = $productVersion + $Version + "." + $revision + "-" + $gitTag + "-" + $gitSHA1;
+
+Write-Host "File Version: " + $fileVersion;
+Write-Host "Info Version: " + $InfoVersion;
 
 foreach ($fileName in $fileNames) {
     # Define file variables
@@ -29,4 +40,5 @@ foreach ($fileName in $fileNames) {
         $newAssemblyContent > $assemblyFile;       
     }  
 }
+
 
