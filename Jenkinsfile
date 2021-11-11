@@ -78,6 +78,11 @@ pipeline
 						basefilename=$(basename "$filename")
 						github-release upload --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${basefilename} --file ${filename}
 					done
+					for filename in Installers/*.zip; do
+						[ -e "$filename" ] || continue
+						basefilename=$(basename "$filename")
+						github-release upload --user marianob85 --repo ${GITHUB_REPO} --tag ${TAG_NAME} --name ${basefilename} --file ${filename}
+					done
 				'''
 			}
 		}
