@@ -27,7 +27,7 @@ pipeline
 				bat '''
 					call "C:/BuildTools/VC/Auxiliary/Build/vcvars64.bat"
 					nuget restore CodeBeautifier.sln
-					msbuild CodeBeautifier.sln /t:Rebuild /p:Configuration=Release;Platform="x64" /flp:logfile=warnings.log;warningsonly
+					msbuild CodeBeautifier.sln /t:Rebuild /p:Configuration=Release;Platform="x64" /p:DeployExtension=false /flp:logfile=warnings.log;warningsonly
 					'''
 				stash includes: "warnings.log", name: "warningsFiles"
 				stash includes: 'Installers/*, CodeBeautifier-VSPackage/bin/Release/*.vsix', name: "bin"
