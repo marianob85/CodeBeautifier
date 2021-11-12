@@ -17,7 +17,7 @@ pipeline
 	stages
 	{
 		stage('Build'){
-			agent{ label "windows/buildtools2019" }
+			agent{ label "windows/buildtools2022" }
 			steps {
 				checkout scm
 				script {
@@ -27,15 +27,15 @@ pipeline
 				bat '''
 					call "C:/BuildTools/VC/Auxiliary/Build/vcvars64.bat"
 					nuget restore CodeBeautifier.sln
-					msbuild CodeBeautifier.sln /t:Rebuild /p:Configuration=Release;Platform="Any CPU" /flp:logfile=warnings.log;warningsonly
+					msbuild CodeBeautifier.sln /t:Rebuild /p:Configuration=Release;Platform="x64" /flp:logfile=warnings.log;warningsonly
 					'''
 				stash includes: "warnings.log", name: "warningsFiles"
-				stash includes: 'Installers/*, CodeBeautifier-VSPackage/out/Release/*.vsix', name: "bin"
+				stash includes: 'Installers/*, CodeBeautifier-VSPackage/bin/Release/*.vsix', name: "bin"
 				stash includes: 'UnitTest/bin/Release/*', name: "unitTest"
 			}
 		}
 		stage('UnitTests'){
-			agent{ label "windows/buildtools2019" }
+			agent{ label "windows/base" }
 			steps {
 				unstash "unitTest"
 				powershell '''
@@ -59,7 +59,7 @@ pipeline
 			agent any
 			steps {
 				unstash "bin"
-				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/out/Release/*.vsix', onlyIfSuccessful: true
+				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/bin/Release/*.vsix', onlyIfSuccessful: true
 			}
 		}
 		
@@ -89,7 +89,7 @@ pipeline
 	}
 	post { 
         changed { 
-            emailext body: 'Please go to ${env.BUILD_URL}', to: '${DEFAULT_RECIPIENTS}', subject: "Job ${env.JOB_NAME} (${env.BUILD_NUMBER}) ${currentBuild.currentResult}".replaceAll("%2F", "/")
+            emailext body: "Please go to ${env.BUILD_URL}", to: '${DEFAULT_RECIPIENTS}', subject: "Job ${env.JOB_NAME} (${env.BUILD_NUMBER}) ${currentBuild.currentResult}".replaceAll("%2F", "/")
         }
     }
 }
