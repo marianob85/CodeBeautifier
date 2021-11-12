@@ -59,7 +59,7 @@ pipeline
 			agent any
 			steps {
 				unstash "bin"
-				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/bin/Release/*.vsix', onlyIfSuccessful: true
+				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/**/*.vsix', onlyIfSuccessful: true
 			}
 		}
 		
