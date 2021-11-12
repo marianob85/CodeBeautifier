@@ -30,7 +30,7 @@ pipeline
 					msbuild CodeBeautifier.sln /t:Rebuild /p:Configuration=Release;Platform="x64" /p:DeployExtension=false /flp:logfile=warnings.log;warningsonly
 					'''
 				stash includes: "warnings.log", name: "warningsFiles"
-				stash includes: 'Installers/*, CodeBeautifier-VSPackage/bin/Release/*.vsix', name: "bin"
+				stash includes: 'Installers/*, CodeBeautifier-VSPackage/bin/x64/Release/*.vsix', name: "bin"
 				stash includes: 'UnitTest/bin/x64/Release/*', name: "unitTest"
 			}
 		}
