@@ -31,15 +31,15 @@ pipeline
 					'''
 				stash includes: "warnings.log", name: "warningsFiles"
 				stash includes: 'Installers/*, CodeBeautifier-VSPackage/bin/Release/*.vsix', name: "bin"
-				stash includes: 'UnitTest/bin/Release/*', name: "unitTest"
+				stash includes: 'UnitTest/bin/x64/Release/*', name: "unitTest"
 			}
 		}
 		stage('UnitTests'){
-			agent{ label "windows/base" }
+			agent{ label "windows/buildtools2022" }
 			steps {
 				unstash "unitTest"
 				powershell '''
-					vstest.console.exe UnitTest/bin/Release/UnitTest.dll /Logger:trx
+					vstest.console.exe UnitTest/bin/x64/Release/UnitTest.dll /Logger:trx
 				'''
 				mstest testResultsFile:"**/*.trx", keepLongStdio: true
 			}
