@@ -59,7 +59,12 @@ pipeline
 			agent any
 			steps {
 				unstash "bin"
-				archiveArtifacts artifacts: 'Installers/*, CodeBeautifier-VSPackage/**/*.vsix', onlyIfSuccessful: true
+				dir("Installers"){
+					archiveArtifacts artifacts: '*.zip', onlyIfSuccessful: true
+				}
+				dir("CodeBeautifier-VSPackage/bin/x64/Release"){
+					archiveArtifacts artifacts: '*.vsix', onlyIfSuccessful: true
+				}
 			}
 		}
 		
